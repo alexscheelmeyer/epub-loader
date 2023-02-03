@@ -1,0 +1,27 @@
+{
+  "name": "epub-loader",
+  "version": "0.0.1",
+  "description": "For loading epub files",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexscheelmeyer/epub-loader.git"
+  },
+  "keywords": [
+    "epub"
+  ],
+  "author": "Alex Scheel Meyer",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/alexscheelmeyer/epub-loader/issues"
+  },
+  "homepage": "https://github.com/alexscheelmeyer/epub-loader#readme",
+  "dependencies": {
+    "lodash": "4.17.21",
+    "unzipper": "0.10.11",
+    "xml2js": "0.4.23"
+  }
+}
