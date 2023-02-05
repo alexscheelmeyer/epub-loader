@@ -11,6 +11,7 @@ async function loadZip(filename) {
 
 async function getEpubFileContents(directory, filename) {
   const file = directory.files.find(d => d.path === filename);
+  if (!file) throw new Error(`File ${filename} not found`);
   return await file.buffer();
 }
 
@@ -64,14 +65,16 @@ async function loadEpub(filename) {
   const spine = spineData.map((s) => _.get(s, '$.idref'));
 
   return { files, manifest, metadata, spine,
-    getFileContent: async function(filename) {
-      return getEpubFileContents(directory, filename);
+    getFileContent: async function(filepath) {
+      return getEpubFileContents(directory, filepath);
     },
     getFileContentById: async function(id) {
-      const href = _.get(manifest.find((m) => m.id === id), 'href');
+      const entry = manifest.find((m) => m.id === id);
+      const href = _.get(entry, 'href');
       const filepath = path.normalize(`${rootPath}/${href}`);
       if (files.indexOf(filepath) < 0) throw new Error(`Id ${id} not found`);
-      return getEpubFileContents(directory, filepath);
+      const content = await getEpubFileContents(directory, filepath);
+      return { path: filepath, content };
     },
   };
 }
