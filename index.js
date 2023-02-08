@@ -56,12 +56,13 @@ async function loadEpub(filename) {
   const root = await parseStringPromise(rootStr);
   const rootPath = path.dirname(rootFilename);
 
-  const metadata = _.get(root, 'package.metadata');
+  const package = _.get(root, 'package', _.get(root, 'opf:package'));
+  const metadata = _.get(package, 'metadata', _.get(package, 'opf:metadata'));
 
-  const manifestData = _.get(root, ['package', 'manifest', 0, 'item'], []);
+  const manifestData = _.get(package, ['manifest', 0, 'item'], _.get(package, ['opf:manifest', 0, 'opf:item'], []));
   const manifest = manifestData.map((m) => _.get(m, '$'));
 
-  const spineData = _.get(root, ['package', 'spine', 0, 'itemref'], []);
+  const spineData = _.get(package, ['spine', 0, 'itemref'], _.get(package, ['opf:spine', 0, 'opf:itemref'], []));
   const spine = spineData.map((s) => _.get(s, '$.idref'));
 
   return { files, manifest, metadata, spine,

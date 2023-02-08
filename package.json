@@ -1,6 +1,6 @@
 {
   "name": "epub-loader",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "For loading epub files",
   "main": "index.js",
   "scripts": {
