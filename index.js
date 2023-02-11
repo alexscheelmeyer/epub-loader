@@ -2,11 +2,16 @@ const _ = require('lodash');
 const fs = require('fs');
 const path = require('path');
 const unzipper = require('unzipper');
+const { Readable } = require('stream');
 const { parseStringPromise } = require('xml2js');
 
 
-async function loadZip(filename) {
-  return await unzipper.Open.file(filename);
+async function loadZip(filenameOrBuffer) {
+  if (Buffer.isBuffer(filenameOrBuffer)) {
+    return await unzipper.Open.buffer(filenameOrBuffer);
+  } else {
+    return await unzipper.Open.file(filenameOrBuffer);
+  }
 }
 
 async function getEpubFileContents(directory, filename) {
@@ -15,8 +20,8 @@ async function getEpubFileContents(directory, filename) {
   return await file.buffer();
 }
 
-async function loadEpub(filename) {
-  const directory = await loadZip(filename)
+async function loadEpub(filenameOrBuffer) {
+  const directory = await loadZip(filenameOrBuffer)
     .catch((e) => {
       throw new Error(`Could not load ${filename} (${e.message})`);
     });
